@@ -23,8 +23,8 @@ public class PPM {
      *        they correspond to input filename and output filename.
      */
     public static void main(String[] args) {
-	if (args.length != 3) {
-	    System.out.println("Usage: java PPM (infile).ppm (outfile).ppm imageProcess");
+	if (args.length != 3 && args.length != 4) {
+	    System.out.println("Usage: java PPM (infile).ppm (outfile).ppm imageProcess numberArgument");
 	    return;
 	}
 
@@ -33,7 +33,16 @@ public class PPM {
 	    PackedImage img = read(args[0]);
 	    String imgProc = args[2].toLowerCase();
 	    if (imgProc.equals("grayscale"))
-	    	img = Grayscale.grayscale(img);
+	    	img = ImageProcessing.grayscale(img);
+	    else if (imgProc.equals("threshold")) {
+	    	int level = Integer.parseInt(args[3]);
+	    	if (level < 0 || 255 < level)
+		    	throw new IOException("Level must be between 0 and 255 inclusive");
+	    	img = ImageProcessing.threshold(img, level);
+	    }
+//	    else if (imgProc.equals("sobel gradient")) {
+//	    	
+//	    }
 	    else
 	    	throw new IOException("Invalid image process.");
 	    write(args[1], img);
