@@ -23,14 +23,19 @@ public class PPM {
      *        they correspond to input filename and output filename.
      */
     public static void main(String[] args) {
-	if (args.length != 2) {
-	    System.out.println("Usage: java PPM (infile).ppm (outfile).ppm");
+	if (args.length != 3) {
+	    System.out.println("Usage: java PPM (infile).ppm (outfile).ppm imageProcess");
 	    return;
 	}
 
 	try {
 	    System.out.println("Attempting to read " + args[0]);
 	    PackedImage img = read(args[0]);
+	    String imgProc = args[2].toLowerCase();
+	    if (imgProc.equals("grayscale"))
+	    	img = Grayscale.grayscale(img);
+	    else
+	    	throw new IOException("Invalid image process.");
 	    write(args[1], img);
 	}
 	catch (Exception E) {

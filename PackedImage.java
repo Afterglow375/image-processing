@@ -19,9 +19,9 @@ public class PackedImage {
      * @param cols the width of the image in pixels
      */
     public PackedImage(int rows, int cols) {
-	nr = rows; 
-	nc = cols;
-	pixels = new int [nr * nc];
+		nr = rows; 
+		nc = cols;
+		pixels = new int [nr * nc];
     }
     
     /**
@@ -42,7 +42,7 @@ public class PackedImage {
      * @return An intensity from 0-255
      */
     public int at(int r, int c, int ch) {
-	return (pixels[r * nc + c] >> (16 - ch * 8)) & 0xFF;
+    	return (pixels[r * nc + c] >> (16 - ch * 8)) & 0xFF;
     }
     
     /**
@@ -64,7 +64,7 @@ public class PackedImage {
      * @param v the 0-255 intensity to store at the location
      */
     public void set(int r, int c, int ch, int v) {
-	pixels[r * nc + c] = (pixels[r * nc + c] & ~(0xFF << (16 - 8 * ch))) | (v << (16 - ch * 8));
+    	pixels[r * nc + c] = (pixels[r * nc + c] & ~(0xFF << (16 - 8 * ch))) | (v << (16 - ch * 8));
     }
 
     /**
