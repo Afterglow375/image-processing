@@ -1,10 +1,11 @@
-import java.util.Arrays;
-
 
 public class Kernel {
 	protected int r;
 	protected int c;
 	protected int pix[];
+	private final static int BOX_BLUR[] = {1,1,1,1,1,1,1,1,1};
+	private final static int SOBEL_GRADIENT_GX[] = {1,0,-1,2,0,-2,1,0,-1};
+	private final static int SOBEL_GRADIENT_GY[] = {1,2,1,0,0,0,-1,-2,-1};
 	
 	/**
      * Constructor for a box blur or sobel gradient convolution kernel
@@ -14,15 +15,14 @@ public class Kernel {
 	public Kernel(String kernelType) {
 		this.r = 3;
 		this.c = 3;
-		this.pix = new int[9];
 		if (kernelType.equals("boxBlur")) {
-			Arrays.fill(pix, 1); // Set the 3x3 kernel to all 1's if box blur
+			this.pix = BOX_BLUR.clone();
 		}
-		else if (kernelType.equals("sobelGradientGx")) { // Sobel gradient Gx
-			
+		else if (kernelType.equals("sobelGradientGx")) {
+			this.pix = SOBEL_GRADIENT_GX;
 		}
-		else { // Sobel gradient Gy
-			
+		else if (kernelType.equals("sobelGradientGy")) {
+			this.pix = SOBEL_GRADIENT_GY;
 		}
 	}
 	
@@ -43,17 +43,9 @@ public class Kernel {
      * @param c the column coordinate (x value) of the kernel
      * @return An integer value of the kernel
      */
-	
     public int at(int r, int c) {
     	return pix[r * this.c + c];
     }
-    
-    /**
-     * Returns the total size of the kernel array
-     * 
-     * @return Number of rows in the kernel
-     */
-    public int size() {return this.r * this.c;}
     
     /**
      * Returns height of the kernel

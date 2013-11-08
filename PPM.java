@@ -42,9 +42,9 @@ public class PPM {
 	    }
 	    else if (imgProc.equals("boxblur"))
 	    	img = Convolution.boxBlur(img);
-//	    else if (imgProc.equals("sobel gradient")) {
-//	    	
-//	    }
+	    else if (imgProc.equals("sobelgradient")) {
+	    	img = Convolution.sobelGradient(img);
+	    }
 	    else
 	    	throw new IOException("Invalid image process.");
 	    write(args[1], img);
