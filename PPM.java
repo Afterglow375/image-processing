@@ -11,7 +11,7 @@ import java.util.*;
  * Note that the comments in here follow Javadoc format.
  * Also notice that the comments for this have two stars at the very beginning...
  *
- * @author Brian Jackson
+ * @author Brian Jackson, modified by Alex Tatusko
  */
 
 public class PPM {
@@ -40,6 +40,8 @@ public class PPM {
 		    	throw new IOException("Level must be between 0 and 255 inclusive");
 	    	img = ImageProcessing.threshold(img, level);
 	    }
+	    else if (imgProc.equals("boxblur"))
+	    	img = Convolution.boxBlur(img);
 //	    else if (imgProc.equals("sobel gradient")) {
 //	    	
 //	    }

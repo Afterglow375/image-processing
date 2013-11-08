@@ -1,7 +1,7 @@
 
 public class ImageProcessing {
 	
-	/**
+    /**
      * Returns a grayscaled image.
      *
      * @param A PackedImage file to grayscale.
@@ -22,7 +22,7 @@ public class ImageProcessing {
 		return outImg;
 	}
 	
-	/**
+    /**
      * Returns a thresholded image based on an user given level.
      *
      * @param A PackedImage file to threshold.
