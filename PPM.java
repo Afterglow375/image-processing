@@ -16,44 +16,6 @@ import java.util.*;
 
 public class PPM {
 
-    /** 
-     * A small test program that shows how to read and write a PPM image.
-     *
-     * @param args the command line arguments. If there are two arguments,
-     *        they correspond to input filename and output filename.
-     */
-    public static void main(String[] args) {
-	if (args.length != 3 && args.length != 4) {
-	    System.out.println("Usage: java PPM (infile).ppm (outfile).ppm imageProcess numberArgument");
-	    return;
-	}
-
-	try {
-	    System.out.println("Attempting to read " + args[0]);
-	    PackedImage img = read(args[0]);
-	    String imgProc = args[2].toLowerCase();
-	    if (imgProc.equals("grayscale"))
-	    	img = ImageProcessing.grayscale(img);
-	    else if (imgProc.equals("threshold")) {
-	    	int level = Integer.parseInt(args[3]);
-	    	if (level < 0 || 255 < level)
-		    	throw new IOException("Level must be between 0 and 255 inclusive");
-	    	img = ImageProcessing.threshold(img, level);
-	    }
-	    else if (imgProc.equals("boxblur"))
-	    	img = Convolution.boxBlur(img);
-	    else if (imgProc.equals("sobelgradient")) {
-	    	img = Convolution.sobelGradient(img);
-	    }
-	    else
-	    	throw new IOException("Invalid image process.");
-	    write(args[1], img);
-	}
-	catch (Exception E) {
-	    System.out.println("Exception: " + E.getMessage());
-	}
-    }
-
     /**
      * Writes a PPM file from a PackedImage object to the present working directory.
      *
@@ -61,7 +23,6 @@ public class PPM {
      * @param image a (color) image to format and write
      * @throws IOException When file writing fails for one reason or another
      */
-
     public static void write(String filename, PackedImage image) throws IOException {
 	File out = new File(filename);
 	FileOutputStream fos = new FileOutputStream(out);
