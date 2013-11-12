@@ -1,8 +1,14 @@
+/**
+ * This convolution class contains the image processes that use a kernel:
+ * box blur, gaussian blur, and sobel gradient.
+ * 
+ * @author Alex Tatusko
+ */
 
 public class Convolution {
 	
 	/**
-     * Takes an image applies a box blur to the image.
+     * Takes an image and applies a sobel gradient to it.
      *
      * @param img the input image to apply a sobel gradient
      * @return An image with a sobel gradient applied
@@ -42,7 +48,7 @@ public class Convolution {
      * Takes an image and a float sigma and applies a gaussian blur to the image.
      *
      * @param img the input image to apply a gaussian blur
-     * @param sigma a float sigma which controls how blurry to make the image
+     * @param sigma a float which controls how blurry to make the image
      * @return A gaussian blurred image
      */
 	public static PackedImage gaussianBlur(PackedImage img, float sigma) {
@@ -55,7 +61,8 @@ public class Convolution {
 	
 	/**
      * Takes an image and a kernel and convolves it by computing the sum of products of each pixel
-     * in the image using the kernel and then optionally normalizing the sum.
+     * in the image using the kernel. It then normalizes the sum if necessary before storing it in the appropriate
+     * pixel in the image to return.
      *
      * @param img the input image to convolve
      * @param kernel the convolution kernel to multiply pixels with 
@@ -67,7 +74,7 @@ public class Convolution {
 		double sum;
 		int kernelRowConstant = (kernel.rows()-1)/2;
 		int kernelColConstant = (kernel.cols()-1)/2;
-		
+
 		for (int iRow = 0; iRow < img.rows(); iRow++) { // for each input image row
 		    for (int iCol = 0; iCol < img.cols(); iCol++) { // for each input image col
 		    	for (int ch = 0; ch < 3; ch++) { // for each channel
@@ -78,7 +85,7 @@ public class Convolution {
 		    				imgColVal = kCol+iCol-kernelColConstant; 
 		    				if (imgRowVal < 0 || imgRowVal > img.rows()-1 || imgColVal < 0 || imgColVal > img.rows()-1) // consider out of range pixels black
 		    					sum += 0;
-		    				else  // add in input image's r, g, or b value otherwise
+		    				else // add in input image's r, g, or b value otherwise
 		    					sum += kernel.at(kRow, kCol) * img.at(imgRowVal, imgColVal, ch);
 		    			}
 			    	}

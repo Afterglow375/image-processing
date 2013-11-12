@@ -1,3 +1,8 @@
+/**
+ * This class is an implementation of a convolution kernel, used by various image processes.
+ * 
+ * @author Alex Tatusko
+ */
 
 public class Kernel {
 	protected int r;
@@ -63,14 +68,14 @@ public class Kernel {
      *
      * @param r the row coordinate (y value) of the kernel
      * @param c the column coordinate (x value) of the kernel
-     * @return An integer value of the kernel
+     * @return The value of the kernel at the specified row and column
      */
     public double at(int r, int c) {
     	return pix[r * this.c + c];
     }
     
     /**
-     * Returns the normalizing integer that divides into the sum when applying the kernel
+     * Returns the normalizing integer that divides into the sum when applying the kernel to ensure a [0, 255] value
      * 
      * @return Normalizing integer
      */

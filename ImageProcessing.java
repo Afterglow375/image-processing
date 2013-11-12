@@ -1,6 +1,14 @@
 import java.io.IOException;
 
+/**
+ * This class contains the main which allows one to apply the image processes.
+ * It also contains the grayscale, threshold, and segmentation methods.
+ * 
+ * @author Alex Tatusko
+ */
+
 public class ImageProcessing {
+	 private final static int COLORS[] = {0x98fb98, 0x40e0d0, 0xdb7093, 0x6b8e23, 0xf08080, 0xa52a2a, 0x3cb371, 0xff4500};
 	
 	 /** 
      * The main method that is used to apply various image effects to a .ppm file
@@ -27,19 +35,19 @@ public class ImageProcessing {
 			    	throw new IOException("Level must be between 0 and 255 inclusive");
 		    	img = threshold(img, level);
 		    }
-//		    else if (imgProc.equals("segmentation")) 
-//	    	img = segment(img);
+		    else if (imgProc.equals("segmentation"))
+		    	img = segment(img, Integer.parseInt(args[3]));
 		    else if (imgProc.equals("boxblur"))
 		    	img = Convolution.boxBlur(img);
 		    else if (imgProc.equals("sobelgradient")) 
 		    	img = Convolution.sobelGradient(img);
-		    else if (imgProc.equals("gaussianblur")) {
-			    img = Convolution.gaussianBlur(img, Float.parseFloat(args[3]));
-		    }
+		    else if (imgProc.equals("gaussianblur"))
+		    	img = Convolution.gaussianBlur(img, Float.parseFloat(args[3]));
 		    else
 		    	throw new IOException("Invalid image process.");
 		    PPM.write(args[1], img);
 		}
+		
 		catch (Exception E) {
 		    System.out.println("Exception: " + E.getMessage());
 		}
@@ -93,8 +101,54 @@ public class ImageProcessing {
 		return outImg;
 	}
 	
-//	public static PackedImage segment(PackedImage img) {
-//		
-//	}
+	/**
+     * Returns a segmented image by thresholding the image based on an user given level. 
+     * It then uses a helper function to recursively find connected regions and applies a unique color to them.
+     * 
+     * @param img a PackedImage file to segment.
+     * @param level an integer which controls which pixels to blacken and which to turn white.
+     * @return The segmented PackedImage file.
+     */
+	public static PackedImage segment(PackedImage img, int level) {
+		img = threshold(img, level);
+		int index = 0;
+		
+		for (int r = 0; r < img.rows(); r++) {
+		    for (int c = 0; c < img.cols(); c++) {
+		    	if (img.at(r, c) == 0xffffff) { // If the pixel is white, change that region's color
+		    		segmentRecursion(img, r, c, index);
+		    		index++;
+		    		if (index == 7) // Keeping the indexes in the range of COLOR's size
+		    			index = 0;
+		    	}
+		    }
+		}
+		return img;
+	}
+	
+	/**
+     * It uses recursion to determine which pixels are connected (up, down, left, or right).
+     * Applies a different color to each region.
+     *
+     * @param img a PackedImage file to segment.
+     * @param r the row coordinate (y value) of the pixel
+     * @param c the column coordinate (x value) of the pixel
+     * @param index an integer to select which color to used to colorize the pixel
+     */
+	private static void segmentRecursion(PackedImage img, int r, int c, int index) {
+		img.set(r, c, COLORS[index]);
+		if (r-1 >= 0 && img.at(r-1, c) == 0xffffff) { // If the pixel above the current is white and not outside the image's dimensions
+			segmentRecursion(img, r-1, c, index);
+		}
+		if (r+1 < img.rows() && img.at(r+1, c) == 0xffffff) { // If the pixel below the current is white and not outside the image's dimensions
+			segmentRecursion(img, r+1, c, index);
+		}
+		if (c-1 >= 0 && img.at(r, c-1) == 0xffffff) { // If the pixel to the left of the current is white and not outside the image's dimensions
+			segmentRecursion(img, r, c-1, index);
+		}
+		if (c+1 < img.cols() && img.at(r, c+1) == 0xffffff) { // If the pixel to the right of the current is white and not outside the image's dimensions
+			segmentRecursion(img, r, c+1, index);
+		}
+	}
 	
 }

@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.*;
 
 /**
  * This class contains a very <i>very</i> specific implementation of PPM.
@@ -73,8 +72,8 @@ public class PPM {
 	PackedImage img = new PackedImage(nr, nc);
 	for (int r = 0; r < nr; r++)
 	    for (int c = 0; c < nc; c++)
-		for (int ch = 0; ch < 3; ch++)
-		    img.set(r, c, ch, in.read());
+	    	for (int ch = 0; ch < 3; ch++)
+	    		img.set(r, c, ch, in.read());
 	
 	in.close();
 	
