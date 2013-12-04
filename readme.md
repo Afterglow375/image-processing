@@ -1,4 +1,4 @@
-A program that applies various image effects to an input image. Meant to be run through the command line. Uses an outdated PPM format for images, to simply things.
+A program that applies various image effects to an input image. Meant to be run through the command line. Uses an outdated PPM format for images, to simplify things.
 
 Usage: java ImageProcessing (infile).ppm (outfile).ppm imageProcess numberArgument
 
